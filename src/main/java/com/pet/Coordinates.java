@@ -1,3 +1,5 @@
+package com.pet;
+
 import java.util.Objects;
 
 public class Coordinates {

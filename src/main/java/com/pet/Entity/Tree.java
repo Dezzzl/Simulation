@@ -1,7 +1,6 @@
-package Entity;
+package com.pet.Entity;
 
-import Entity.Entity;
-import config.Sprites;
+import com.pet.config.Sprites;
 
 public class Tree extends Entity {
     @Override

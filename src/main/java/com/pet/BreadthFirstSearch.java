@@ -1,4 +1,7 @@
-import Entity.*;
+package com.pet;
+
+import com.pet.Entity.*;
+import com.pet.Entity.*;
 
 import java.util.*;
 
@@ -14,10 +17,10 @@ public class BreadthFirstSearch {
 
         while (!queuedCoordinates.isEmpty()) {
             Coordinates currentCoordinate = queuedCoordinates.remove();
-            if (map.getEntity(currentCoordinate)!=null&&map.getEntity(currentCoordinate).getClass() == entityToFind.getClass()) {
+            if (map.getEntity(currentCoordinate) != null && map.getEntity(currentCoordinate).getClass() == entityToFind.getClass()) {
                 return findWay(currentCoordinate, parent);
             } else {
-                takeTheNeighborsOfTheEntity(currentCoordinate,parent, map);
+                takeTheNeighborsOfTheEntity(currentCoordinate, parent, map);
             }
         }
         return null;
@@ -35,7 +38,7 @@ public class BreadthFirstSearch {
             int newY = currentCoordinate.getY() + direction[1];
             if (newX < 0 || newY < 0 || newX >= map.getX()
                     || newY >= map.getY() || exploredCoordinates.contains(new Coordinates(newX, newY))
-                    ||isTheCoordinateAnObstacle(new Coordinates(newX, newY), parent,map)) {
+                    || isTheCoordinateAnObstacle(new Coordinates(newX, newY), parent, map)) {
                 continue;
             } else {
                 Coordinates neighboringCoordinate = new Coordinates(newX, newY);
@@ -56,17 +59,14 @@ public class BreadthFirstSearch {
         Collections.reverse(way);
         return way;
     }
-    private  boolean isTheCoordinateAnObstacle(Coordinates coordinates, Coordinates parentCoordinate, Map map){
-        Entity entity=map.getEntity(coordinates);
-        Entity parent=map.getEntity(parentCoordinate);
-        if(entity instanceof Rock||entity instanceof Tree){
+
+    private boolean isTheCoordinateAnObstacle(Coordinates coordinates, Coordinates parentCoordinate, Map map) {
+        Entity entity = map.getEntity(coordinates);
+        Entity parent = map.getEntity(parentCoordinate);
+        if (entity instanceof Rock || entity instanceof Tree) {
             return true;
-        }
-        else if(parent instanceof Herbivore && entity instanceof Predator){
+        } else if (parent instanceof Herbivore && entity instanceof Creature) {
             return true;
-        }
-        else {
-            return false;
-        }
+        } else return parent instanceof Predator && entity instanceof Predator;
     }
 }
