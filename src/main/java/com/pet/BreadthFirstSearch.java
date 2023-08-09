@@ -11,9 +11,8 @@ public class BreadthFirstSearch {
     private final HashMap<Coordinates, Coordinates> predecessorMap = new HashMap<>();
     private Entity objectToFind;
 
-    public List<Coordinates> breadthFirstSearch(Coordinates currentCoordinates, Entity entityToFind, Map map) {
-        Coordinates parent = currentCoordinates;
-        queuedCoordinates.add(currentCoordinates);
+    public List<Coordinates> breadthFirstSearch(Coordinates parent, Entity entityToFind, Map map) {
+        queuedCoordinates.add(parent);
 
         while (!queuedCoordinates.isEmpty()) {
             Coordinates currentCoordinate = queuedCoordinates.remove();
@@ -67,6 +66,6 @@ public class BreadthFirstSearch {
             return true;
         } else if (parent instanceof Herbivore && entity instanceof Creature) {
             return true;
-        } else return parent instanceof Predator && entity instanceof Predator;
+        } else return parent instanceof Predator && (entity instanceof Predator || entity instanceof Grass);
     }
 }

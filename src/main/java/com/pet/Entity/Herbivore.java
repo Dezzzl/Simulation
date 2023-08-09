@@ -25,7 +25,8 @@ public class Herbivore extends Creature {
         BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch();
         List<Coordinates> wayToGrass = new ArrayList<>();
         wayToGrass = breadthFirstSearch.breadthFirstSearch(this.getCoordinates(), new Grass(1), map);
-        if (wayToGrass.size() < this.getSpeed()) {
+        if (wayToGrass == null) return;
+        else if (wayToGrass.size() < this.getSpeed()) {
             eatGrass(wayToGrass);
         } else {
             moveToGrass(wayToGrass);
@@ -33,12 +34,11 @@ public class Herbivore extends Creature {
     }
 
     private void eatGrass(List<Coordinates> way) {
-
         Coordinates coordinatesOfGrass = way.get(way.size() - 1);
+        this.setHealthPoints(this.getHealthPoints() + 5);
         map.removeFromMap(coordinatesOfGrass);
         map.removeFromMap(this.getCoordinates());
         this.setCoordinates(coordinatesOfGrass);
-        this.setHealthPoints(this.getHealthPoints() + 5);
         map.AddEntity(coordinatesOfGrass, this);
     }
 

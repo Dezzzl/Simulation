@@ -1,10 +1,13 @@
 package com.pet;
 
 import com.pet.Coordinates;
+import com.pet.Entity.Creature;
 import com.pet.Entity.Entity;
 import com.pet.utils.EntityFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Map {
     private final HashMap<Coordinates, Entity> entities = new HashMap<>();
@@ -50,4 +53,16 @@ public class Map {
         entities.remove(coordinates);
     }
 
+    public List<Coordinates> getCreatureCoordinates() {
+        List<Coordinates> creatureCoordinates = new ArrayList<>();
+        for (int i = 0; i < this.getX(); i++) {
+            for (int j = 0; j < this.getY(); j++) {
+                Entity entity = this.getEntity(new Coordinates(i, j));
+                if (entity instanceof Creature) {
+                    creatureCoordinates.add(new Coordinates(i, j));
+                }
+            }
+        }
+        return creatureCoordinates;
+    }
 }

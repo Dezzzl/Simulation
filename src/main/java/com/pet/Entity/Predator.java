@@ -34,7 +34,8 @@ public class Predator extends Creature {
     public void makeMove() {
         BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch();
         List<Coordinates> wayToHerbivore = breadthFirstSearch.breadthFirstSearch(this.getCoordinates(), new Herbivore(1, 1, new Map(0, 0)), map);
-        if (wayToHerbivore.size() < this.getSpeed()) {
+        if (wayToHerbivore == null) return;
+        else if (wayToHerbivore.size() <= this.getSpeed()) {
             attackHerbivore(wayToHerbivore);
         } else {
             moveToHerbivore(wayToHerbivore);
@@ -43,15 +44,21 @@ public class Predator extends Creature {
     }
 
     private void attackHerbivore(List<Coordinates> way) {
+        Coordinates coordinatesToMove;
         Coordinates coordinatesOfHerbivore = way.get(way.size() - 1);
-        int currentHpOfHerbivore = ((Herbivore) map.getEntity(coordinatesOfHerbivore)).getHealthPoints() - this.getDamage();
+        int currentHpOfHerbivore = (((Herbivore) map.getEntity(coordinatesOfHerbivore)).getHealthPoints() - this.getDamage());
         if (currentHpOfHerbivore > 0) {
             ((Herbivore) map.getEntity(coordinatesOfHerbivore)).setHealthPoints(currentHpOfHerbivore);
-            Coordinates coordinatesToMove = way.get(way.size() - 1);
+            if (way.size() == 1) coordinatesToMove = this.getCoordinates();
+            else {
+                coordinatesToMove = way.get(way.size() - 2);
+            }
+            map.removeFromMap(this.coordinates);
             this.setCoordinates(coordinatesToMove);
             map.AddEntity(coordinatesToMove, this);
         } else {
             map.removeFromMap(coordinatesOfHerbivore);
+            map.removeFromMap(this.coordinates);
             this.setCoordinates(coordinatesOfHerbivore);
             map.AddEntity(coordinatesOfHerbivore, this);
         }
